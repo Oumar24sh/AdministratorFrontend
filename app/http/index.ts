@@ -13,6 +13,8 @@ import {
   ChangeRequestApi,
   CopropertyApi,
   ApproverApi,
+  RoleApi
+
 } from "../../api";
 
 const BASE_URL = "http://localhost:3001";
@@ -34,6 +36,7 @@ export const api = {
   coproperty: new CopropertyApi(apiConfig),
   approver: new ApproverApi(apiConfig),
   plotStatus: new PlotStatusApi(apiConfig),
+  role: new RoleApi(apiConfig),
 };
 
 export type ApiClient = typeof api;

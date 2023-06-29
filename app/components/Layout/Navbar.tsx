@@ -49,7 +49,7 @@ const Navbar: FunctionComponent<Props> = (props) => {
       position="fixed"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, height: navbarHeight }}
     >
-      <Container maxWidth="xl" sx={{ padding: "0 16px 0 10px !important" }}>
+      <Container maxWidth="xl" sx={{ padding: "0 16px 0 10px !important",mx:0,maxWidth:'100% !important' }}>
         <Toolbar disableGutters sx={{ py: "10px" }}>
           <Box
             sx={{

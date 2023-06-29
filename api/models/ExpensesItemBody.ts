@@ -34,10 +34,16 @@ export interface ExpensesItemBody {
     expenses?: Array<ExpenseItem> | null;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof ExpensesItemBody
      */
-    expenseConfigName?: string | null;
+    yearStart?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ExpensesItemBody
+     */
+    yearEnd?: Date;
 }
 
 /**
@@ -60,7 +66,8 @@ export function ExpensesItemBodyFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'expenses': !exists(json, 'expenses') ? undefined : (json['expenses'] === null ? null : (json['expenses'] as Array<any>).map(ExpenseItemFromJSON)),
-        'expenseConfigName': !exists(json, 'expenseConfigName') ? undefined : json['expenseConfigName'],
+        'yearStart': !exists(json, 'yearStart') ? undefined : (new Date(json['yearStart'])),
+        'yearEnd': !exists(json, 'yearEnd') ? undefined : (new Date(json['yearEnd'])),
     };
 }
 
@@ -74,7 +81,8 @@ export function ExpensesItemBodyToJSON(value?: ExpensesItemBody | null): any {
     return {
         
         'expenses': value.expenses === undefined ? undefined : (value.expenses === null ? null : (value.expenses as Array<any>).map(ExpenseItemToJSON)),
-        'expenseConfigName': value.expenseConfigName,
+        'yearStart': value.yearStart === undefined ? undefined : (value.yearStart.toISOString()),
+        'yearEnd': value.yearEnd === undefined ? undefined : (value.yearEnd.toISOString()),
     };
 }
 

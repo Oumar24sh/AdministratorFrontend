@@ -7,16 +7,17 @@ import { MdDownload, MdOutlineAdd } from "react-icons/md";
 import { CustomFooterTotalComponent } from "~/components/Expenses/ExpenseFooter";
 import CustomToolbar from "~/components/Datagrid/CustomToolbar";
 import CustomDataGrid from "~/components/CustomDataGrid";
+import dayjs from "dayjs";
 
 interface OwnProps {
   expenses: any;
-  affRef:any
+  affRef?: string;
 }
 
 type Props = OwnProps;
 
 const Expenses: FunctionComponent<Props> = (props) => {
-  const { expenses ,affRef} = props;
+  const { expenses, affRef } = props;
   const columns: GridColDef[] = [
     {
       field: "expenseDisplayName",
@@ -45,25 +46,14 @@ const Expenses: FunctionComponent<Props> = (props) => {
   ];
   const navigate = useNavigate();
 
-  const slots: any = {
+  const csvFileName = `Expense_List_${dayjs().format("DD-MM-YYYY HH:mm a")}`;
+  const slotProps: any = {
     footer: { total: Math.round(expenses?.totalAmount).toLocaleString() },
     toolbar: {
-      extra: (
-        <Box>
-          <Button
-            onClick={() => navigate(affRef?`/aff/${affRef}/expenses/add`:"/afm/expenses/add")}
-            startIcon={<MdOutlineAdd />}
-            size={"small"}
-          >
-            New Expense
-          </Button>
-          <Button disabled startIcon={<MdDownload />} size={"small"}>
-            Export
-          </Button>
-        </Box>
-      ),
+      csvOptions: { fileName:csvFileName },
     },
   };
+
   return (
     <div style={{ width: "100%", height: 500 }}>
       <CustomDataGrid
@@ -75,7 +65,7 @@ const Expenses: FunctionComponent<Props> = (props) => {
           footer: CustomFooterTotalComponent,
           toolbar: CustomToolbar,
         }}
-        slotProps={slots}
+        slotProps={slotProps}
         getRowId={(row) => row.id}
         initialState={{
           pinnedColumns: { left: ["expenseDisplayName"] },

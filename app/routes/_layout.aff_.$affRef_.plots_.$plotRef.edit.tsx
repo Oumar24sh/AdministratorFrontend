@@ -31,7 +31,7 @@ export const action: ActionFunction = async ({ request,params }: ActionArgs) => 
         return redirect(`/aff/${affRef}/plots`, {
             headers: { "Set-Cookie": await commitSession(session) },
         });
-    } catch (e) { 
+    } catch (e) {
         if (e?.response) {
             return e.response;
         } else {

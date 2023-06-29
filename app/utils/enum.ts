@@ -48,6 +48,8 @@ export const BreadcrumMap = {
   changerequests: "Change Requests",
   coproperty: "Copropriétés",
   plot: "Plot",
+  edit: "Edit",
+  activity: "User Activity",
 };
 
 export const PlotStatusColor = {

@@ -15,6 +15,8 @@
 
 import * as runtime from '../runtime';
 import type {
+  AffExpenseItemsVersion,
+  AfmExpenseItemsVersion,
   CreateResponse,
   Expense,
   ExpenseResponse,
@@ -22,6 +24,10 @@ import type {
   ProblemDetails,
 } from '../models/index';
 import {
+    AffExpenseItemsVersionFromJSON,
+    AffExpenseItemsVersionToJSON,
+    AfmExpenseItemsVersionFromJSON,
+    AfmExpenseItemsVersionToJSON,
     CreateResponseFromJSON,
     CreateResponseToJSON,
     ExpenseFromJSON,
@@ -44,12 +50,27 @@ export interface ApiExpensesAffAffRefPostRequest {
     expensesItemBody?: ExpensesItemBody;
 }
 
+export interface ApiExpensesAffAffRefYearGetRequest {
+    affRef: string;
+    year: string;
+    expenseRef?: string;
+}
+
 export interface ApiExpensesAfmGetRequest {
     expenseRef?: string;
 }
 
 export interface ApiExpensesAfmPostRequest {
     expensesItemBody?: ExpensesItemBody;
+}
+
+export interface ApiExpensesAfmYearGetRequest {
+    year: string;
+    expenseRef?: string;
+}
+
+export interface ApiExpensesListAffAffRefGetRequest {
+    affRef: string;
 }
 
 /**
@@ -174,6 +195,50 @@ export class ExpensesApi extends runtime.BaseAPI {
 
     /**
      */
+    async apiExpensesAffAffRefYearGetRaw(requestParameters: ApiExpensesAffAffRefYearGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExpenseResponse>> {
+        if (requestParameters.affRef === null || requestParameters.affRef === undefined) {
+            throw new runtime.RequiredError('affRef','Required parameter requestParameters.affRef was null or undefined when calling apiExpensesAffAffRefYearGet.');
+        }
+
+        if (requestParameters.year === null || requestParameters.year === undefined) {
+            throw new runtime.RequiredError('year','Required parameter requestParameters.year was null or undefined when calling apiExpensesAffAffRefYearGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.expenseRef !== undefined) {
+            queryParameters['ExpenseRef'] = requestParameters.expenseRef;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/Expenses/Aff/{affRef}/{year}`.replace(`{${"affRef"}}`, encodeURIComponent(String(requestParameters.affRef))).replace(`{${"year"}}`, encodeURIComponent(String(requestParameters.year))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExpenseResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiExpensesAffAffRefYearGet(requestParameters: ApiExpensesAffAffRefYearGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExpenseResponse> {
+        const response = await this.apiExpensesAffAffRefYearGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async apiExpensesAfmGetRaw(requestParameters: ApiExpensesAfmGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExpenseResponse>> {
         const queryParameters: any = {};
 
@@ -245,6 +310,46 @@ export class ExpensesApi extends runtime.BaseAPI {
 
     /**
      */
+    async apiExpensesAfmYearGetRaw(requestParameters: ApiExpensesAfmYearGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExpenseResponse>> {
+        if (requestParameters.year === null || requestParameters.year === undefined) {
+            throw new runtime.RequiredError('year','Required parameter requestParameters.year was null or undefined when calling apiExpensesAfmYearGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.expenseRef !== undefined) {
+            queryParameters['ExpenseRef'] = requestParameters.expenseRef;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/Expenses/Afm/{year}`.replace(`{${"year"}}`, encodeURIComponent(String(requestParameters.year))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExpenseResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiExpensesAfmYearGet(requestParameters: ApiExpensesAfmYearGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExpenseResponse> {
+        const response = await this.apiExpensesAfmYearGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async apiExpensesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Expense>>> {
         const queryParameters: any = {};
 
@@ -272,6 +377,74 @@ export class ExpensesApi extends runtime.BaseAPI {
      */
     async apiExpensesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Expense>> {
         const response = await this.apiExpensesGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiExpensesListAffAffRefGetRaw(requestParameters: ApiExpensesListAffAffRefGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AffExpenseItemsVersion>>> {
+        if (requestParameters.affRef === null || requestParameters.affRef === undefined) {
+            throw new runtime.RequiredError('affRef','Required parameter requestParameters.affRef was null or undefined when calling apiExpensesListAffAffRefGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/Expenses/List/Aff/{affRef}`.replace(`{${"affRef"}}`, encodeURIComponent(String(requestParameters.affRef))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AffExpenseItemsVersionFromJSON));
+    }
+
+    /**
+     */
+    async apiExpensesListAffAffRefGet(requestParameters: ApiExpensesListAffAffRefGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AffExpenseItemsVersion>> {
+        const response = await this.apiExpensesListAffAffRefGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiExpensesListAfmGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AfmExpenseItemsVersion>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/Expenses/List/Afm`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AfmExpenseItemsVersionFromJSON));
+    }
+
+    /**
+     */
+    async apiExpensesListAfmGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AfmExpenseItemsVersion>> {
+        const response = await this.apiExpensesListAfmGetRaw(initOverrides);
         return await response.value();
     }
 

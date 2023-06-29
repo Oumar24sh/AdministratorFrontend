@@ -24,7 +24,9 @@ import {
   setToastMessage,
 } from "~/utils/session.server";
 import {affNames} from "~/utils/enum";
-
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat)
 export let loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const expenses = await api.expenses.apiExpensesAfmGet();
@@ -41,10 +43,12 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
     const session = await getSession(request.headers.get("Cookie"));
     const response = await validator.validate(await request.formData());
     if (response.error) return validationError(response.error);
+
     const body: any = {
       expensesItemBody: {
         expenses: response.data.expenses,
-        expenseConfigName: response.data.expenseConfigName,
+        yearStart: new Date(dayjs(response?.data?.yearStart,'MM-YYYY').toString()),
+        yearEnd: new Date(dayjs(response?.data?.yearEnd,'MM-YYYY').toString()),
       },
     };
     await api.expenses.apiExpensesAfmPost(body);
@@ -59,6 +63,7 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
     });
   } catch (e) {
     if (e?.response) {
+      console.log({e});
       return e.response;
     } else {
       return { error: true };

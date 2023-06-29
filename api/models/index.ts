@@ -2,6 +2,8 @@
 /* eslint-disable */
 export * from './AffCalculation';
 export * from './AffCalculationVersion';
+export * from './AffExpenseItemsVersion';
+export * from './AfmExpenseItemsVersion';
 export * from './ApproverResponse';
 export * from './AuditResponse';
 export * from './AuditResponseListPagedResponse';
@@ -25,6 +27,7 @@ export * from './ExpenseMultiplierValueTypes';
 export * from './ExpenseResponse';
 export * from './ExpenseUnitType';
 export * from './ExpensesItemBody';
+export * from './IdentityRole';
 export * from './Login';
 export * from './LoginResponse';
 export * from './PlotBody';

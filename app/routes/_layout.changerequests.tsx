@@ -4,7 +4,7 @@ import { api } from "~/http";
 import { useLoaderData } from "@remix-run/react";
 import CustomDataGrid from "~/components/CustomDataGrid";
 import authenticator from "~/utils/auth.server";
-import {  GridActionsCellItem } from "@mui/x-data-grid-pro";
+import { GridActionsCellItem } from "@mui/x-data-grid-pro";
 import PlotStatusChip from "~/components/PlotStatusChip";
 import ChangeRequestStatusChip from "~/components/ChangeRequestStatusChip";
 import { Tooltip } from "@mui/material";
@@ -16,6 +16,7 @@ import {
   getSession,
   setToastMessage,
 } from "~/utils/session.server";
+import dayjs from "dayjs";
 
 export async function loader({ request }) {
   const authenticated = await authenticator.isAuthenticated(request);
@@ -30,10 +31,15 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
   try {
     const session = await getSession(request.headers.get("Cookie"));
     const formData = await request.formData();
-    const statusId:any = formData.get('statusId')
-    const id:any = formData.get('id')
-    var text = statusId == 2 ? 'Request approved successfully' : 'Request declined successfully'
-    await api.changeRequest.apiChangeRequestPost({changeRequestBody:{id,statusId}});
+    const statusId: any = formData.get("statusId");
+    const id: any = formData.get("id");
+    var text =
+      statusId == 2
+        ? "Request approved successfully"
+        : "Request declined successfully";
+    await api.changeRequest.apiChangeRequestPost({
+      changeRequestBody: { id, statusId },
+    });
     const message = {
       options: { variant: "success" },
       message: text,
@@ -138,17 +144,21 @@ export default function ChangeRequests() {
                 color="error"
                 type={"submit"}
               />
-
             </form>
           </Tooltip>,
         ];
       },
     },
   ];
+  const csvFileName = `Change_Requests_List_${dayjs().format(
+    "DD-MM-YYYY HH:mm"
+  )}`;
+
   return (
     <Page title={"Change Requests"}>
       <CustomDataGrid
-        rows={changeRequests}
+        csvOptions={{ fileName: csvFileName }}
+        rows={changeRequests || null}
         getRowId={(row) => row.id}
         columns={columns}
       />

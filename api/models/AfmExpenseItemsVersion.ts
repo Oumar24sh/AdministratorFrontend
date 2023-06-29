@@ -42,6 +42,18 @@ export interface AfmExpenseItemsVersion {
      * @type {Date}
      * @memberof AfmExpenseItemsVersion
      */
+    yearStart?: Date | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AfmExpenseItemsVersion
+     */
+    yearEnd?: Date | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AfmExpenseItemsVersion
+     */
     createdAt?: Date | null;
 }
 
@@ -67,6 +79,8 @@ export function AfmExpenseItemsVersionFromJSONTyped(json: any, ignoreDiscriminat
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'version': !exists(json, 'version') ? undefined : json['version'],
+        'yearStart': !exists(json, 'yearStart') ? undefined : (json['yearStart'] === null ? null : new Date(json['yearStart'])),
+        'yearEnd': !exists(json, 'yearEnd') ? undefined : (json['yearEnd'] === null ? null : new Date(json['yearEnd'])),
         'createdAt': !exists(json, 'createdAt') ? undefined : (json['createdAt'] === null ? null : new Date(json['createdAt'])),
     };
 }
@@ -83,6 +97,8 @@ export function AfmExpenseItemsVersionToJSON(value?: AfmExpenseItemsVersion | nu
         'id': value.id,
         'name': value.name,
         'version': value.version,
+        'yearStart': value.yearStart === undefined ? undefined : (value.yearStart === null ? null : value.yearStart.toISOString()),
+        'yearEnd': value.yearEnd === undefined ? undefined : (value.yearEnd === null ? null : value.yearEnd.toISOString()),
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt === null ? null : value.createdAt.toISOString()),
     };
 }

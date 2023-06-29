@@ -9,10 +9,10 @@ import {
 import { PlotsStatusLegend } from "~/components/Datagrid/PlotsStatusLegend";
 import PlotHeaderRef from "~/components/Plots/PlotHeaderRef";
 import { Tooltip } from "@mui/material";
-import { AiFillEye } from "react-icons/ai";
 import { useNavigate } from "react-router";
 import { BiBuildingHouse } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
+import dayjs from "dayjs";
 
 interface OwnProps {
   plots: any;
@@ -86,38 +86,38 @@ const Plots: FunctionComponent<Props> = (props) => {
       minWidth: 200,
       valueFormatter: (params) => Math.round(params?.value),
     },
-    {
-      field: "tantiemesAFMVotes",
-      headerName: "Tantièmes Générale Votes",
-      type: "number",
-      filterable: false,
-      flex: 1,
-      minWidth: 200,
-      valueFormatter: (params) => Math.round(params?.value),
-    },
+    // {
+    //   field: "tantiemesAFMVotes",
+    //   headerName: "Tantièmes AFM Votes",
+    //   type: "number",
+    //   filterable: false,
+    //   flex: 1,
+    //   minWidth: 200,
+    //   valueFormatter: (params) => Math.round(params?.value),
+    // },
     {
       field: "tantiemesAFFVotes",
-      headerName: "Tantièmes Spéciale Votes",
+      headerName: "Tantièmes AFF Votes",
       type: "number",
       filterable: false,
       flex: 1,
       minWidth: 200,
       valueFormatter: (params) => Math.round(params?.value),
     },
-    {
-      field: "tantiemesAFMCharges",
-      headerName: "Tantièmes Générale Charges",
-      type: "number",
-      filterable: false,
-
-      // width: 110,
-      flex: 1,
-      minWidth: 200,
-      valueFormatter: (params) => Math.round(params?.value),
-    },
+    // {
+    //   field: "tantiemesAFMCharges",
+    //   headerName: "Tantièmes AFM Charges",
+    //   type: "number",
+    //   filterable: false,
+    //
+    //   // width: 110,
+    //   flex: 1,
+    //   minWidth: 200,
+    //   valueFormatter: (params) => Math.round(params?.value),
+    // },
     {
       field: "tantiemesAFFCharges",
-      headerName: "Tantièmes Spéciale Charges",
+      headerName: "Tantièmes AFF Charges",
       type: "number",
       filterable: false,
 
@@ -128,7 +128,7 @@ const Plots: FunctionComponent<Props> = (props) => {
     },
     {
       field: "chargesSpeciales",
-      headerName: "Charges Spéciale (Rs)",
+      headerName: "Charges AFF (Rs)",
       type: "number",
       // width: 110,
       filterable: false,
@@ -157,7 +157,11 @@ const Plots: FunctionComponent<Props> = (props) => {
                 icon={<MdEdit size={20} />}
                 label="Edit"
                 color="primary"
-                onClick={() => navigate(`/aff/${params.row.affRef}/plots/${params.row.ref}/edit`)}
+                onClick={() =>
+                  navigate(
+                    `/aff/${params.row.affRef}/plots/${params.row.ref}/edit`
+                  )
+                }
               />
             </Tooltip>,
           ];
@@ -168,7 +172,11 @@ const Plots: FunctionComponent<Props> = (props) => {
                 icon={<MdEdit size={20} />}
                 label="Edit"
                 color="primary"
-                onClick={() => navigate(`/aff/${params.row.affRef}/plots/${params.row.ref}/edit`)}
+                onClick={() =>
+                  navigate(
+                    `/aff/${params.row.affRef}/plots/${params.row.ref}/edit`
+                  )
+                }
               />
             </Tooltip>,
             <Tooltip title={"View Coproperty"}>
@@ -188,10 +196,12 @@ const Plots: FunctionComponent<Props> = (props) => {
       },
     },
   ];
+  const csvFileName = `Plot_List_${dayjs().format("DD-MM-YYYY HH:mm a")}`;
 
   return (
     <div style={{ width: "100%", height: 500 }}>
       <CustomDataGrid
+        csvOptions={{ fileName: csvFileName }}
         columns={columns}
         source={plots}
         getRowId={(row) => row.id}

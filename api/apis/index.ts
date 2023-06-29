@@ -11,5 +11,6 @@ export * from './ExpensesApi';
 export * from './PlotApi';
 export * from './PlotStatusApi';
 export * from './RefreshTokenApi';
+export * from './RoleApi';
 export * from './SummaryApi';
 export * from './UserApi';

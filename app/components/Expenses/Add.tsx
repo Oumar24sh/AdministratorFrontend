@@ -17,26 +17,34 @@ import FormPage from "~/components/PageWithBack";
 import { LoadingButton } from "@mui/lab";
 import { validator } from "~/schema/expense";
 import { FieldArray, ValidatedForm } from "remix-validated-form";
-import { Input, InputNumber, Select, Checkbox } from "~/components/Fields";
+import {
+  Input,
+  InputNumber,
+  Select,
+  Checkbox,
+  YearPicker,
+} from "~/components/Fields";
+import dayjs, { Dayjs } from "dayjs";
+import { useActionData } from "@remix-run/react";
 
 interface OwnProps {
   expenses: any;
   expensesList: any;
   title: string;
-  affRef?:string;
+  affRef?: string;
 }
 
 type Props = OwnProps;
 
 const AddExpense: FunctionComponent<Props> = (props) => {
-  const { expenses, expensesList, title,affRef } = props;
+  const { expenses, expensesList, title, affRef } = props;
 
-  const [initialValues, setInitialValues]: any = useState({
-    expenseConfigName: "",
+  const [initialValues]: any = useState({
+    year: dayjs(),
     expenses: expenses?.data,
     check: false,
   });
-
+  const isPastYear = (date: Dayjs) => date?.get("year") < dayjs().get("year");
   return (
     <FormPage title={title} contentSx={{ px: "32px" }}>
       <ValidatedForm
@@ -47,17 +55,23 @@ const AddExpense: FunctionComponent<Props> = (props) => {
         noValidate
       >
         <Grid container spacing={2}>
-          <Grid item md={6}>
-            <Input
+          <Grid item>
+            <YearPicker
               required
-              name={"expenseConfigName"}
-              label={"Reference"}
-              placeholder={"e.g. AFM Budget for July 2023"}
-              helperText={
-                affRef? "Expense list reference or budget year. e.g. `AFF01's Budget for July 2023`":"Expense list reference or budget year. e.g. `AFM's Budget for July 2023`"
-              }
+              name={"yearStart"}
+              label={"Financial Year Start"}
+              shouldDisableYear={isPastYear}
             />
           </Grid>
+          <Grid item>
+            <YearPicker
+              required
+              name={"yearEnd"}
+              label={"Financial Year End"}
+              shouldDisableYear={isPastYear}
+            />
+          </Grid>
+
           <Grid item md={12}>
             <FieldArray name="expenses">
               {(items, { push, remove }) => (
@@ -70,7 +84,7 @@ const AddExpense: FunctionComponent<Props> = (props) => {
                             required
                             menuItems={expensesList}
                             name={`expenses[${index}].expenseId`}
-                            label="Expense"
+                            label="Expense Category"
                           />
                         </Grid>
                         <Grid item md={2}>
@@ -98,7 +112,7 @@ const AddExpense: FunctionComponent<Props> = (props) => {
                         push({ expenseId: "" });
                       }}
                     >
-                      Add new expense item
+                      Add new expense category
                     </Button>
                   </Grid>
                 </Grid>

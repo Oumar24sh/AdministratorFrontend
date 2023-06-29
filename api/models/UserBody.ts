@@ -51,10 +51,10 @@ export interface UserBody {
     password?: string | null;
     /**
      * 
-     * @type {Array<string>}
+     * @type {string}
      * @memberof UserBody
      */
-    roles?: Array<string> | null;
+    roleId?: string | null;
 }
 
 /**
@@ -81,7 +81,7 @@ export function UserBodyFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'email': !exists(json, 'email') ? undefined : json['email'],
         'userName': !exists(json, 'userName') ? undefined : json['userName'],
         'password': !exists(json, 'password') ? undefined : json['password'],
-        'roles': !exists(json, 'roles') ? undefined : json['roles'],
+        'roleId': !exists(json, 'roleId') ? undefined : json['roleId'],
     };
 }
 
@@ -99,7 +99,7 @@ export function UserBodyToJSON(value?: UserBody | null): any {
         'email': value.email,
         'userName': value.userName,
         'password': value.password,
-        'roles': value.roles,
+        'roleId': value.roleId,
     };
 }
 

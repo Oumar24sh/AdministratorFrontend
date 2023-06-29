@@ -9,12 +9,15 @@ apis/ExpensesApi.ts
 apis/PlotApi.ts
 apis/PlotStatusApi.ts
 apis/RefreshTokenApi.ts
+apis/RoleApi.ts
 apis/SummaryApi.ts
 apis/UserApi.ts
 apis/index.ts
 index.ts
 models/AffCalculation.ts
 models/AffCalculationVersion.ts
+models/AffExpenseItemsVersion.ts
+models/AfmExpenseItemsVersion.ts
 models/ApproverResponse.ts
 models/AuditResponse.ts
 models/AuditResponseListPagedResponse.ts
@@ -38,6 +41,7 @@ models/ExpenseMultiplierValueTypes.ts
 models/ExpenseResponse.ts
 models/ExpenseUnitType.ts
 models/ExpensesItemBody.ts
+models/IdentityRole.ts
 models/Login.ts
 models/LoginResponse.ts
 models/PlotBody.ts

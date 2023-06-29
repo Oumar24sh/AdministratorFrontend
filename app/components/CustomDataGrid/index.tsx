@@ -2,17 +2,30 @@ import React, { FunctionComponent } from "react";
 import StripedDatagrid from "~/components/StripedDatagrid";
 import CustomToolbar from "~/components/Datagrid/CustomToolbar";
 import { useSearchParams } from "@remix-run/react";
+import { GridCsvExportOptions } from "@mui/x-data-grid";
+import dayjs from "dayjs";
 
 interface OwnProps {
   paginate?: boolean;
   source: any;
   getRowId: any;
+  extraSlots: any;
+  csvOptions?: GridCsvExportOptions;
 }
 
 type Props = OwnProps;
 
 const CustomDataGrid: FunctionComponent<Props> = (props) => {
-  const { paginate, source, getRowId, ...otherProps } = props;
+  const {
+    paginate,
+    source,
+    getRowId,
+    extraSlots,
+    csvOptions = {
+      fileName: `Export_${dayjs().format("DD-MM-YYYY HH:mm a")}`,
+    },
+    ...otherProps
+  } = props;
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePaginationChange = (pageOptions) => {
     const { page: pageNumber, pageSize } = pageOptions;
@@ -26,12 +39,15 @@ const CustomDataGrid: FunctionComponent<Props> = (props) => {
   };
   const onFilterChange = (filterOptions) => {
     let filterItems = filterOptions?.items?.reduce((acc, val) => {
-      if(val.value !== "" || val.value !== null || typeof val.value !== "undefined"){
+      if (
+        val.value !== "" ||
+        val.value !== null ||
+        typeof val.value !== "undefined"
+      ) {
         acc[val.field] = val.value;
       }
       return acc;
     }, {});
-    console.log({filterItems});
     const initialSearchParams = [...searchParams.entries()].reduce(
       (acc, [key, value]) => ({ ...acc, [key]: value }),
       {}
@@ -58,16 +74,20 @@ const CustomDataGrid: FunctionComponent<Props> = (props) => {
       }
     : {};
 
+  const slots = extraSlots || {};
+
   return (
     <StripedDatagrid
       slots={{
         toolbar: CustomToolbar,
+        ...slots,
       }}
       rows={source?.data}
       rowCount={source?.totalRecords}
       getRowId={getRowId}
       density={"compact"}
       filterMode="server"
+      slotProps={{ toolbar: { csvOptions } }}
       onFilterModelChange={onFilterChange}
       {...paginationProps}
       {...otherProps}

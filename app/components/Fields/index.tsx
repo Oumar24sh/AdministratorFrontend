@@ -7,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
+import { DatePicker } from "@mui/x-date-pickers-pro";
 
 interface MyInputProps {
   name: string;
@@ -19,8 +20,10 @@ interface MyInputProps {
 
 interface MySelectProps extends MyInputProps {
   menuItems: any[];
-  customLabelFunc?:any;
+  customLabelFunc?: any;
 }
+
+interface MyYearPickerProps extends MyInputProps {}
 
 interface MyCheckboxProps extends MyInputProps {}
 
@@ -85,16 +88,53 @@ export const Checkbox = ({
   required,
   menuItems,
   value,
-    ...otherProps
+  ...otherProps
 }: MyCheckboxProps) => {
   const { error, getInputProps } = useField(name);
   return (
     <FormGroup>
       <FormControlLabel
-        control={<MuiCheckbox {...getInputProps({ type: "checkbox", value })} {...otherProps} />}
+        control={
+          <MuiCheckbox
+            {...getInputProps({ type: "checkbox", value })}
+            {...otherProps}
+          />
+        }
         label={label}
       />
     </FormGroup>
+  );
+};
+
+export const YearPicker = ({
+  name,
+  label,
+  helperText,
+  placeholder,
+  required,
+  menuItems,
+  value,
+  shouldDisableYear,
+  defaultValue,
+  ...otherProps
+}: MyYearPickerProps) => {
+  const { error, getInputProps } = useField(name);
+  return (
+    <DatePicker
+      size={"small"}
+      label={label}
+      format={"MM-YYYY"}
+      openTo="month"
+      error={!!error}
+      views={["month","year"]}
+      helperText={error ? error : helperText}
+      shouldDisableYear={shouldDisableYear}
+      slotProps={{
+        textField: {
+          ...getInputProps({ id: name }),
+        },
+      }}
+    />
   );
 };
 
@@ -105,7 +145,7 @@ export const Select = ({
   placeholder,
   required,
   menuItems,
-    customLabelFunc
+  customLabelFunc,
 }: MySelectProps) => {
   const { error, getInputProps } = useField(name);
   return (
@@ -123,7 +163,7 @@ export const Select = ({
     >
       {menuItems.map((item) => (
         <MenuItem key={item.id} value={item.id}>
-          {!customLabelFunc? item?.label : customLabelFunc(item)}
+          {!customLabelFunc ? item?.label : customLabelFunc(item)}
         </MenuItem>
       ))}
     </TextField>

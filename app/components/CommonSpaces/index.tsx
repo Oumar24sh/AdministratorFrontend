@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import {GridColDef} from "@mui/x-data-grid-pro";
 import CustomDataGrid from "~/components/CustomDataGrid";
 import CustomToolbar from "~/components/Datagrid/CustomToolbar";
+import dayjs from "dayjs";
 
 interface OwnProps {
     commonSpaces:any;
@@ -131,9 +132,11 @@ const CommonSpaces: FunctionComponent<Props> = (props) => {
             valueFormatter: (params) =>
                 params?.value ? params?.value?.toLocaleString() : "-",
         },];
+    const csvFileName = `Common_Space_List_${dayjs().format("DD-MM-YYYY HH:mm a")}`;
 
     return ( <div style={{ width: "100%", height: 500 }}>
         <CustomDataGrid
+            csvOptions={{ fileName: csvFileName }}
             columns={columns}
             source={commonSpaces}
             getRowId={(row) => row.id}

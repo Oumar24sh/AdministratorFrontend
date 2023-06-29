@@ -11,6 +11,8 @@ import { AiFillEye } from "react-icons/ai";
 import StripedDatagrid from "~/components/StripedDatagrid";
 import React from "react";
 import { api } from "~/http";
+import CustomDataGrid from "~/components/CustomDataGrid";
+import dayjs from "dayjs";
 
 export async function loader() {
   return await api.summary.apiSummaryGet();
@@ -71,22 +73,22 @@ export default function AffSummary() {
       minWidth: 200,
       valueFormatter: (params) => Math.round(params?.value).toLocaleString(),
     },
-    {
-      field: "tantiemesAFMVotes",
-      headerName: "Tantièmes AFM Votes",
-      type: "number",
-      // width: 110,
-      minWidth: 200,
-      valueFormatter: (params) => Math.round(params?.value).toLocaleString(),
-    },
-    {
-      field: "tantiemesAFMCharges",
-      headerName: "Tantièmes AFM Charges",
-      type: "number",
-      // width: 110,
-      minWidth: 200,
-      valueFormatter: (params) => Math.round(params?.value).toLocaleString(),
-    },
+    // {
+    //   field: "tantiemesAFMVotes",
+    //   headerName: "Tantièmes AFM Votes",
+    //   type: "number",
+    //   // width: 110,
+    //   minWidth: 200,
+    //   valueFormatter: (params) => Math.round(params?.value).toLocaleString(),
+    // },
+    // {
+    //   field: "tantiemesAFMCharges",
+    //   headerName: "Tantièmes AFM Charges",
+    //   type: "number",
+    //   // width: 110,
+    //   minWidth: 200,
+    //   valueFormatter: (params) => Math.round(params?.value).toLocaleString(),
+    // },
     {
       field: "chargesGenerales",
       headerName: "Charges AFM (MUR)",
@@ -142,10 +144,12 @@ export default function AffSummary() {
       },
     },
   ];
+  const csvFileName = `AFF_Summary_${dayjs().format("DD-MM-YYYY HH:mm")}`;
   return (
     <div style={{ width: "100%", height: 500 }}>
-      <StripedDatagrid
-        rows={data}
+      <CustomDataGrid
+          csvOptions={{ fileName: csvFileName }}
+          rows={data}
         columns={columns}
         autoPageSize
         initialState={{

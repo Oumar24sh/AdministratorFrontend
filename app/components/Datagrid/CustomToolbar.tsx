@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from "react";
 import {
-  GridToolbarColumnsButton,
   GridToolbarContainer,
-  GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid-pro";
@@ -12,15 +10,17 @@ import { Box } from "@mui/material";
 export function CustomToolbar(
   props: NonNullable<GridSlotsComponentsProps["toolbar"]>
 ) {
+  const {extra,csvOptions} = props
   return (
     <GridToolbarContainer sx={{ justifyContent: "space-between" }}>
       <Box>
-        {/*<GridToolbarColumnsButton />*/}
         <GridToolbarFilterButton />
+        <GridToolbarExport
+          csvOptions={csvOptions}
+          printOptions={{ disableToolbarButton: true }}
+        />
       </Box>
-      {/*<GridToolbarDensitySelector />*/}
-      {/*<GridToolbarExport />*/}
-      {props?.extra}
+      {extra}
     </GridToolbarContainer>
   );
 }

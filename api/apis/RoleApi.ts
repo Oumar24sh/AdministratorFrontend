@@ -15,12 +15,12 @@
 
 import * as runtime from '../runtime';
 import type {
-  DashboardResponse,
+  IdentityRole,
   ProblemDetails,
 } from '../models/index';
 import {
-    DashboardResponseFromJSON,
-    DashboardResponseToJSON,
+    IdentityRoleFromJSON,
+    IdentityRoleToJSON,
     ProblemDetailsFromJSON,
     ProblemDetailsToJSON,
 } from '../models/index';
@@ -28,11 +28,11 @@ import {
 /**
  * 
  */
-export class DashboardApi extends runtime.BaseAPI {
+export class RoleApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiDashboardGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DashboardResponse>> {
+    async apiRoleGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<IdentityRole>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -46,19 +46,19 @@ export class DashboardApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/Dashboard`,
+            path: `/api/Role`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DashboardResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(IdentityRoleFromJSON));
     }
 
     /**
      */
-    async apiDashboardGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DashboardResponse> {
-        const response = await this.apiDashboardGetRaw(initOverrides);
+    async apiRoleGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<IdentityRole>> {
+        const response = await this.apiRoleGetRaw(initOverrides);
         return await response.value();
     }
 

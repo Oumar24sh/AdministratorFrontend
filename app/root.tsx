@@ -22,6 +22,8 @@ import { json, LoaderArgs } from "@remix-run/server-runtime";
 import authenticator from "~/utils/auth.server";
 import { commitSession, getSession } from "~/utils/session.server";
 import { SnackbarProvider } from "notistack";
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 
 interface DocumentProps {
   children: React.ReactNode;
@@ -115,7 +117,9 @@ export default function App() {
           horizontal: "right",
         }}
       >
-        <Outlet />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Outlet />
+        </LocalizationProvider>
       </SnackbarProvider>
     </Document>
   );

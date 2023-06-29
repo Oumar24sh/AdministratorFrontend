@@ -3,6 +3,7 @@ import Page from "~/components/Page";
 import { api } from "~/http";
 import { useLoaderData } from "@remix-run/react";
 import CustomDataGrid from "~/components/CustomDataGrid";
+import dayjs from "dayjs";
 
 export async function loader({ request }) {
   const url = new URL(request.url);
@@ -51,9 +52,14 @@ export default function Activity() {
       flex: 1,
     },
   ];
+  const csvFileName = `User_Activity_List_${dayjs().format(
+    "DD-MM-YYYY HH:mm"
+  )}`;
+
   return (
-    <Page title={"Activity"}>
+    <Page title={"User Activity"}>
       <CustomDataGrid
+        csvOptions={{ fileName: csvFileName }}
         source={audits}
         getRowId={(row) => row.id}
         columns={columns}

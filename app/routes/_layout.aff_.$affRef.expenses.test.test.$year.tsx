@@ -3,14 +3,13 @@ import {api} from "~/http";
 import {useLoaderData, useParams} from "@remix-run/react";
 import Expenses from "~/components/Expenses";
 import React from "react";
-import ExpensesList from "~/components/ExpensesList";
 
 export let loader: LoaderFunction = async ({ request,params }) => {
-    const {affRef}:any = params
-    return api.expenses.apiExpensesListAffAffRefGet({affRef});
+    const {affRef,year}:any = params
+    return api.expenses.apiExpensesAffAffRefYearGet({affRef,year});
 };
-export default function AffExpenses() {
+export default function AffExpenseYear() {
     const expenses: any = useLoaderData();
     const { affRef } = useParams();
-    return <ExpensesList expenses={expenses} affRef={affRef}/>;
+    return "HI";
 }
