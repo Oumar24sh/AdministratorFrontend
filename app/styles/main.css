@@ -1,0 +1,16 @@
+.background-pattern {
+    background: url("../assets/arrows.svg"), #0092BC;
+    background-repeat: repeat;
+    background-size: 340px; /* Adjust the size as per your requirements */
+    /*background-position: 10px 10px; !* Adjust the gutter size *!*/
+}
+/*.content-background-pattern {*/
+/*    background: url("../assets/arrows.svg"), rgb(238, 242, 246);*/
+/*    background-repeat: repeat;*/
+/*    background-size: 1000px; !* Adjust the size as per your requirements *!*/
+/*    !*background-position: 10px 10px; !* Adjust the gutter size *!*!*/
+/*}*/
+
+/*.active-row{*/
+/*    background-color: #0092BC;*/
+/*}*/
