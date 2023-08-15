@@ -17,7 +17,7 @@ import {
 
 } from "../../api";
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "http://100.121.27.94:8001";
 const configParams: ConfigurationParameters = {
   basePath: BASE_URL,
   // middleware: [],
